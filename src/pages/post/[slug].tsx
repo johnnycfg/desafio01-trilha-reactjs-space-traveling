@@ -10,6 +10,7 @@ import { RichText } from 'prismic-dom';
 import format from 'date-fns/format';
 import { ptBR } from 'date-fns/locale';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
+import { useEffect } from 'react';
 
 interface Post {
   first_publication_date: string | null;
@@ -39,6 +40,18 @@ export default function Post({ post }: PostProps) {
     return <div>Carregando...</div>
   }
 
+  useEffect(() => {
+    let script = document.createElement('script');
+    let anchor = document.getElementById('utterances-comments');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('crossorigin','anonymous');
+    script.setAttribute('async', 'true');
+    script.setAttribute('repo', 'johnnycfg/desafio01-trilha-reactjs-space-traveling');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute( 'theme', 'github-dark');
+    anchor.appendChild(script);
+  }, []);
+
   const formattedPostContent = post.data.content.map(section => {
     const text = section.body.reduce((acc, cur) => {
       return acc = acc.concat(RichText.asHtml([cur]));
@@ -62,7 +75,7 @@ export default function Post({ post }: PostProps) {
     <>
       <main className={styles.container}>
         <div className={styles.banner}>
-          <img src={post.data.banner.url} alt="logo" />
+          <img src={post.data.banner.url} alt='logo' />
         </div>
         <div className={styles.post}>
           <header>
@@ -95,7 +108,10 @@ export default function Post({ post }: PostProps) {
             })}
           </article>
         </div>
+
+        <div id='utterances-comments'></div>
       </main>
+
     </>
   );
 }
