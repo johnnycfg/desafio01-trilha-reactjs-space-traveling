@@ -3,6 +3,15 @@
   height: calc(100vh - 9rem);
   margin: 0 auto;
   padding: 0 2rem;
+
+  a {
+    color: #FF57B2;
+  }
+
+  hr {
+    margin-top: 3rem;
+    opacity: 0.1;
+  }
 }
 
 .post {
@@ -81,4 +90,30 @@
     max-width: 100%;
     max-height: 400px;
   }
+}
+
+.postsNavigation {
+  width: 100%;
+  margin: 3rem 0;
+
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-size: 1.125rem;
+    color: #F8F8F8;
+    line-height: 1.4rem;
+    margin: 1rem 0;
+  }
+
+  div {
+    max-width: 40%;
+
+    &:nth-child(2) {
+      text-align: right;
+    }
+  }
+
 }

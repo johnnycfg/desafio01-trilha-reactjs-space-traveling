@@ -31,9 +31,23 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  navigation: {
+    prevPost: {
+      uid: string | null;
+      data: {
+        title: string | null;
+      }
+    };
+    nextPost: {
+      uid: string | null;
+      data: {
+        title: string | null;
+      }
+    };
+  };
 }
 
-export default function Post({ post }: PostProps) {
+export default function Post({ post, navigation }: PostProps) {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -109,6 +123,27 @@ export default function Post({ post }: PostProps) {
           </article>
         </div>
 
+        <hr />
+
+        <div className={styles.postsNavigation}>
+          { navigation?.prevPost.uid != null ? (
+            <div>
+              <p>{navigation.prevPost.data.title}</p>
+              <a href={`/post/${navigation.prevPost.uid}`}>Post anterior</a>
+            </div>
+          ) : (
+            <div></div>
+          )}
+
+          {navigation?.nextPost.uid != null && (
+            <div>
+              <p>{navigation.nextPost.data.title}</p>
+              <a href={`/post/${navigation.nextPost.uid}`}>Próximo post</a>
+            </div>
+          )}
+        </div>
+
+
         <div id='utterances-comments'></div>
       </main>
 
@@ -142,6 +177,24 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
 
+  const prevPost = await prismic.query(
+    [Prismic.Predicates.at('document.type', 'posts')],
+    {
+      pageSize: 1,
+      orderings: '[document.first_publication_date desc]',
+      after: response.id,
+    }
+  );
+
+  const nextPost = await prismic.query(
+    [Prismic.Predicates.at('document.type', 'posts')],
+    {
+      pageSize: 1,
+      orderings: '[document.first_publication_date]',
+      after: response.id,
+    }
+  );
+
   const post = {
     uid: response.uid,
     first_publication_date: response.first_publication_date,
@@ -160,12 +213,26 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
           })
         }
       }),
-    }
+    },
   };
 
   return {
     props: {
       post,
+      navigation: {
+        prevPost: {
+          uid: prevPost.results[0]?.uid ? prevPost.results[0].uid : null,
+          data: {
+            title: prevPost.results[0]?.data.title ? prevPost.results[0].data.title : null,
+          }
+        },
+        nextPost: {
+          uid: nextPost.results[0]?.uid ? nextPost.results[0].uid : null,
+          data: {
+            title: nextPost.results[0]?.data.title ? nextPost.results[0].data.title : null,
+          }
+        }
+      },
     },
     revalidate: 60 * 60,
   }
