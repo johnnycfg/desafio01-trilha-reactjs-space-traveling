@@ -12,11 +12,12 @@
 
 * Front-end minimalista, desenvolvido conforme layout disponibilizado no [Figma](https://www.figma.com/file/gXDhk0fWnlTuiu0DfPBbZ9/Desafios-M%C3%B3dulo-3-ReactJS?node-id=0%3A1);
 * Integração com o CMS Prismic, para consumo dos dados para exibição dos posts;
+* Uso do recurso de preview do Next + Prismic para visualização das alterações feitas em um post no blog sem ter a necessidade de publicá-lo;
 * Uso do [SSG (Static Site Generation) do Next.js](https://nextjs.org/docs/basic-features/pages#static-generation-recommended), onde os posts são mantidos no cache do servidor para uma melhor performance.
 
 &nbsp;
 
-![mock2](https://user-images.githubusercontent.com/59613054/132603276-3a2cb96b-1dd3-45ed-9ea7-bfb9f070d0e5.png)
+![mock2](https://user-images.githubusercontent.com/59613054/136301388-2ce415ba-8bf8-4159-926b-9143e86bf8e4.png)
 
 &nbsp;
 
